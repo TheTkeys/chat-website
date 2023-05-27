@@ -11,8 +11,9 @@ interface ResponseData {
 type RequestFunction = (url: string, method: string, params?: RequestParams) => Promise<ResponseData>;
 
 const instance = axios.create({
-  baseURL: 'http://your.api.com',
-  timeout: 10000,
+  // baseURL: 'http://[2409:8915:2408:64b3:b54c:cc92:ff14:339d]:8081',
+  baseURL: 'http://107.174.253.112:8080',
+  timeout: 1000000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -32,25 +33,20 @@ instance.interceptors.response.use(
   }
 );
 
-const request: RequestFunction = (url, method, params = {}) => {
-  return instance
-    .request({
-      url,
-      method,
-      params,
-      headers: {
-        // 这里需要显式指定 headers 对象类型，以避免错误
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((response: ResponseData) => {
-      return response;
-    })
-    .catch((error) => {
-      console.error('request error:', error);
-      throw error;
-    });
+const request = (url: string, method: string, data = {}, headers = {}) => {
+  return instance.request({
+    url,
+    method,
+    data,
+    headers
+  })
+    // .then((response: ResponseData) => {
+    //   return response;  
+    // })
+    // .catch((error) => {
+    //   console.error('request error:', error);
+    //   throw error;
+    // });
 };
 
 export default request;
